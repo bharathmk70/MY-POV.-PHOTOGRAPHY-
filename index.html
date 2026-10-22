@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY POV | Photography Inspiration</title>
+
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#10110f;
+  --panel:#191a17;
+  --text:#f5f4ec;
+  --muted:#aaa99f;
+  --accent:#d3f36b;
+  --border:#30312b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+
+nav{
+  height:75px;padding:0 7%;display:flex;align-items:center;
+  justify-content:space-between;background:#10110ff5;
+  position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border)
+}
+.logo{font-size:26px;font-weight:700;letter-spacing:-1px}
+.logo span{color:var(--accent)}
+.navlinks{display:flex;align-items:center;gap:27px}
+.navlinks a{font-size:12px;color:#ddd}
+.navlinks a:hover{color:var(--accent)}
+.menu{display:none;background:none;border:0;color:white;font-size:25px}
+
+.hero{
+  min-height:600px;padding:90px 7%;display:flex;align-items:center;
+  background:linear-gradient(90deg,#080a08ed,#080a0870 65%,#080a0820),
+  linear-gradient(0deg,var(--bg),transparent 30%),
+  url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85') center/cover;
+}
+.hero-content{max-width:720px}
+.tag{color:var(--accent);font-size:10px;letter-spacing:3px;font-weight:bold;text-transform:uppercase}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500}
+h1{font-size:clamp(58px,9vw,100px);line-height:1;letter-spacing:-3px;margin-top:25px}
+h1 em,h2 em{color:var(--accent)}
+.hero p{max-width:460px;color:#d0d0c8;font-size:14px;line-height:1.9;margin-top:25px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-block;padding:14px 20px;font-size:11px;font-weight:bold;border:1px solid var(--border)}
+.primary{background:var(--accent);color:#10110f;border-color:var(--accent)}
+.secondary{background:#ffffff0d;color:white}
+.btn:hover{opacity:.8}
+
+.stats{padding:25px 7%;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid var(--border)}
+.stats span{font-size:11px;color:var(--muted)}
+.stats b{color:var(--accent);margin-right:10px}
+
+section{padding:85px 7%}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:30px}
+.heading h2{font-size:clamp(36px,5vw,52px);margin-top:10px}
+.heading p{font-size:12px;color:var(--muted);line-height:1.9;max-width:390px}
+
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.category{height:340px;position:relative;overflow:hidden;cursor:pointer;background:var(--panel)}
+.category img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.category:hover img{transform:scale(1.06)}
+.category:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#000d,transparent 70%);pointer-events:none}
+.cat-text{position:absolute;bottom:24px;left:22px;z-index:1}
+.cat-text small{color:var(--accent);font-size:10px;letter-spacing:2px}
+.cat-text h3{font-size:28px;margin-top:8px}
+.cat-text p{font-size:11px;color:#ddd;margin-top:7px}
+
+.gallery-section{background:#171814}
+.toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;margin-bottom:25px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{padding:10px 14px;background:transparent;border:1px solid var(--border);border-radius:30px;color:#ddd;font-size:11px}
+.filter.active,.filter:hover{background:var(--accent);color:#10110f;border-color:var(--accent)}
+.search{background:#10110f;border:1px solid var(--border);padding:12px 14px;min-width:220px;color:white}
+.search input{background:none;border:0;outline:none;color:white;width:180px;font-size:12px}
+.search input::placeholder{color:#999}
+
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.photo{position:relative;background:#25261f;overflow:hidden;min-width:0}
+.photo img{display:block;width:100%;height:300px;object-fit:cover;transition:transform .4s,opacity .3s}
+.photo:hover img{transform:scale(1.04);opacity:.85}
+.photo-info{padding:14px}
+.photo-info h3{font-size:18px}
+.photo-info p{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6}
+.photo-category{color:var(--accent);font-size:9px;text-transform:uppercase;letter-spacing:2px}
+.save{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid #ffffff70;background:#10110fa8;color:white;font-size:19px;z-index:2}
+.save.saved{color:var(--accent)}
+.photo[hidden]{display:none!important}
+.empty{display:none;text-align:center;color:var(--muted);padding:40px}
+.empty.show{display:block}
+
+.tips{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.tips img{width:100%;height:480px;object-fit:cover}
+.tips h2{font-size:clamp(38px,5vw,56px);line-height:1.13;margin:15px 0}
+.tips .intro{font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:20px}
+.tip{padding:17px 0;border-top:1px solid var(--border);display:flex;gap:15px}
+.tip b{color:var(--accent);font-size:12px}
+.tip h3{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700}
+.tip p{font-size:11px;line-height:1.8;color:var(--muted);margin-top:5px}
+
+.quote{text-align:center;padding:95px 7%;background:linear-gradient(#0009,#000b),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85') center/cover}
+.quote h2{max-width:850px;margin:20px auto;font-size:clamp(35px,6vw,65px);line-height:1.2}
+.quote p{font-size:10px;letter-spacing:2px;margin-top:20px;color:#ddd}
+
+footer{padding:40px 7% 20px;background:#0b0c0a}
+.footer-top{display:flex;justify-content:space-between;gap:25px;padding-bottom:30px}
+.footer-top p{font-size:12px;color:var(--muted);line-height:1.8;max-width:330px;margin-top:12px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:#ccc}
+.footer-bottom{border-top:1px solid var(--border);padding-top:18px;display:flex;justify-content:space-between;gap:15px;color:#888;font-size:10px}
+
+.lightbox{display:none;position:fixed;inset:0;background:#000f;z-index:20;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:75vh;object-fit:contain}
+.lightbox-content{text-align:center}
+.lightbox h3{margin-top:15px;font-size:25px}
+.lightbox p{margin-top:7px;font-size:12px;color:#ccc}
+.close{position:absolute;right:25px;top:15px;background:none;border:0;color:white;font-size:35px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#10110f;padding:12px 20px;font-size:12px;z-index:30;display:none}
+.toast.show{display:block}
+
+@media(max-width:900px){
+ .gallery{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .photo img{height:260px}
+ .tips{gap:25px}
+}
+@media(max-width:650px){
+ nav{padding:0 5%}
+ .menu{display:block}
+ .navlinks{display:none;position:absolute;top:75px;left:0;right:0;padding:25px;background:#111;flex-direction:column;align-items:flex-start}
+ .navlinks.show{display:flex}
+ .hero{padding:75px 6%;min-height:540px}
+ section{padding:65px 5%}
+ .stats{padding:22px 5%}
+ .stats span{font-size:9px}
+ .heading{align-items:flex-start;flex-direction:column}
+ .categories{grid-template-columns:1fr}
+ .category{height:300px}
+ .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .photo img{height:220px}
+ .toolbar{align-items:stretch}
+ .filters{gap:6px}
+ .filter{padding:9px 11px}
+ .search{width:100%}
+ .search input{width:85%}
+ .tips{grid-template-columns:1fr}
+ .tips img{height:330px}
+ .footer-top{flex-direction:column}
+ .footer-bottom{flex-direction:column}
+}
+@media(max-width:380px){
+ .gallery{grid-template-columns:1fr}
+ .photo img{height:300px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a class="logo" href="#home">MY <span>POV.</span></a>
+  <button class="menu" id="menu" aria-label="Open menu">☰</button>
+  <div class="navlinks" id="navlinks">
+    <a href="#home">Home</a>
+    <a href="#categories">Categories</a>
+    <a href="#gallery">Explore</a>
+    <a href="#tips">Photography Tips</a>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <div class="hero-content">
+    <div class="tag">YOUR VISION. YOUR STORY.</div>
+    <h1>Life looks<br>better from<br><em>your POV.</em></h1>
+    <p>Discover aesthetic photo poses, cinematic sunsets and beautiful green landscapes. Find inspiration for your next picture, reel or unforgettable memory.</p>
+    <div class="actions">
+      <a class="btn primary" href="#gallery">EXPLORE PHOTOS ↗</a>
+      <a class="btn secondary" href="#categories">FIND YOUR VIBE</a>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <span><b>01.</b> FIND YOUR ANGLE</span>
+  <span><b>02.</b> FEEL THE MOMENT</span>
+  <span><b>03.</b> MAKE IT YOURS</span>
+</div>
+
+<section id="categories">
+  <div class="heading">
+    <div><div class="tag">EXPLORE YOUR AESTHETIC</div><h2>What's your POV?</h2></div>
+    <p>Every mood has a frame. Choose your vibe and discover ideas for your next photograph.</p>
+  </div>
+
+  <div class="categories">
+    <article class="category" data-pick="poses" tabindex="0">
+      <img loading="lazy" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=85" alt="Portrait pose inspiration">
+      <div class="cat-text"><small>01 / PEOPLE</small><h3>Photo Poses</h3><p>Portraits, candid moments and angles.</p></div>
+    </article>
+    <article class="category" data-pick="sunsets" tabindex="0">
+      <img loading="lazy" src="https://images.unsplash.com/photo-1472120435266-53107fd0c44a?auto=format&fit=crop&w=800&q=85" alt="Scenic sunset">
+      <div class="cat-text"><small>02 / GOLDEN HOUR</small><h3>Sunset Stories</h3><p>Golden skies and dreamy silhouettes.</p></div>
+    </article>
+    <article class="category" data-pick="nature" tabindex="0">
+      <img loading="lazy" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=85" alt="Green forest">
+      <div class="cat-text"><small>03 / OUTDOORS</small><h3>Into the Green</h3><p>Forests, mountains and peaceful places.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="gallery-section" id="gallery">
+  <div class="heading">
+    <div><div class="tag">THE INSPIRATION GALLERY</div><h2>Frames worth saving.</h2></div>
+    <p>Browse photography inspiration. Click any photo to see it larger, or save your favourites.</p>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters">
+      <button class="filter active" data-filter="all">All frames</button>
+      <button class="filter" data-filter="poses">Photo poses</button>
+      <button class="filter" data-filter="sunsets">Sunsets</button>
+      <button class="filter" data-filter="nature">Greenery</button>
+      <button class="filter" data-filter="travel">Travel</button>
+      <button class="filter" data-filter="saved">♥ Saved</button>
+    </div>
+    <label class="search">⌕ <input id="search" type="search" placeholder="Search photos..."></label>
+  </div>
+
+  <div class="gallery" id="galleryGrid">
+
+    <article class="photo" data-category="poses" data-title="Portrait pose">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80" alt="Portrait photography pose">
+      <div class="photo-info"><div class="photo-category">PHOTO POSES</div><h3>The Classic Portrait</h3><p>Use soft light and a relaxed expression.</p></div>
+    </article>
+
+    <article class="photo" data-category="sunsets" data-title="Golden sunset">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1472120435266-53107fd0c44a?auto=format&fit=crop&w=700&q=80" alt="Golden sunset landscape">
+      <div class="photo-info"><div class="photo-category">SUNSETS</div><h3>Golden Hour</h3><p>Let the last rays create the mood.</p></div>
+    </article>
+
+    <article class="photo" data-category="nature" data-title="Forest greenery">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80" alt="Lush green forest">
+      <div class="photo-info"><div class="photo-category">GREENERY</div><h3>Lost in the Forest</h3><p>Explore deep greens and natural textures.</p></div>
+    </article>
+
+    <article class="photo" data-category="travel" data-title="Mountain escape">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80" alt="Mountain peaks">
+      <div class="photo-info"><div class="photo-category">TRAVEL</div><h3>Mountain Escape</h3><p>A little distance from the noise.</p></div>
+    </article>
+
+    <article class="photo" data-category="sunsets" data-title="Evening landscape">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80" alt="Scenic evening landscape">
+      <div class="photo-info"><div class="photo-category">SUNSETS</div><h3>A Quiet Evening</h3><p>Capture the sky as its colours change.</p></div>
+    </article>
+
+    <article class="photo" data-category="poses" data-title="Candid portrait">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80" alt="Outdoor portrait inspiration">
+      <div class="photo-info"><div class="photo-category">PHOTO POSES</div><h3>Candid Moments</h3><p>Keep moving and capture natural expressions.</p></div>
+    </article>
+
+    <article class="photo" data-category="nature" data-title="Forest trail">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=700&q=80" alt="Green forest trail">
+      <div class="photo-info"><div class="photo-category">GREENERY</div><h3>Into the Wild</h3><p>Find inspiration in nature's little details.</p></div>
+    </article>
+
+    <article class="photo" data-category="travel" data-title="Coastal scenery">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=700&q=80" alt="Coastal landscape">
+      <div class="photo-info"><div class="photo-category">TRAVEL</div><h3>Coastal Dreams</h3><p>Open horizons and a peaceful mood.</p></div>
+    </article>
+
+    <article class="photo" data-category="sunsets" data-title="Sunset sky">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=700&q=80" alt="Warm sunset sky">
+      <div class="photo-info"><div class="photo-category">SUNSETS</div><h3>Golden Silhouette</h3><p>Expose for the sky for dramatic colours.</p></div>
+    </article>
+
+    <article class="photo" data-category="poses" data-title="Male portrait">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80" alt="Portrait inspiration for men">
+      <div class="photo-info"><div class="photo-category">PHOTO POSES</div><h3>The Natural Look</h3><p>Try looking away from the camera.</p></div>
+    </article>
+
+    <article class="photo" data-category="nature" data-title="Green plants">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=700&q=80" alt="Green foliage and plants">
+      <div class="photo-info"><div class="photo-category">GREENERY</div><h3>Green Paradise</h3><p>Use layers of leaves to add depth.</p></div>
+    </article>
+
+    <article class="photo" data-category="travel" data-title="Mountain lake">
+      <button class="save" aria-label="Save photo">♡</button>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=700&q=80" alt="Beautiful scenic mountain landscape">
+      <div class="photo-info"><div class="photo-category">TRAVEL</div><h3>Somewhere New</h3><p>Use natural leading lines in your frame.</p></div>
+    </article>
+
+  </div>
+  <div class="empty" id="empty">No photos found. Try another category or search.</div>
+</section>
+
+<section id="tips">
+  <div class="tips">
+    <img loading="lazy" src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1000&q=85" alt="Warm sunlight over a landscape">
+    <div>
+      <div class="tag">A FEW THINGS TO REMEMBER</div>
+      <h2>Make an ordinary moment feel <em>extraordinary.</em></h2>
+      <p class="intro">You don't need an expensive camera to take a beautiful picture. Start with good light, creative angles and your own perspective.</p>
+      <div class="tip"><b>01</b><div><h3>Chase the golden hour</h3><p>Shoot shortly after sunrise or before sunset.</p></div></div>
+      <div class="tip"><b>02</b><div><h3>Experiment with angles</h3><p>Try low angles, reflections and silhouettes.</p></div></div>
+      <div class="tip"><b>03</b><div><h3>Keep it natural</h3><p>Walk, look away and capture candid moments.</p></div></div>
+      <div class="tip"><b>04</b><div><h3>Notice the details</h3><p>Leaves, shadows and reflections make great frames.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="tag">SLOW DOWN AND SEE</div>
+  <h2>Some moments just need <em>your perspective.</em></h2>
+  <p>SEE DIFFERENTLY. FEEL DEEPLY. CAPTURE FOREVER.</p>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div><a class="logo" href="#home">MY <span>POV.</span></a><p>A little corner of the internet for photography lovers and people who find beauty in the little things.</p></div>
+    <div class="footer-links"><a href="#home">Home</a><a href="#categories">Categories</a><a href="#gallery">Gallery</a><a href="#tips">Tips</a></div>
+  </div>
+  <div class="footer-bottom"><span>© <span id="year"></span> MY POV.</span><span>MADE FOR THE LOVE OF FRAMES ♡</span></div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="close" id="close" aria-label="Close">×</button>
+  <div class="lightbox-content"><img id="bigImage" src="" alt=""><h3 id="bigTitle"></h3><p id="bigDesc"></p></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const grid = document.getElementById('galleryGrid');
+const cards = [...grid.querySelectorAll('.photo')];
+const filters = [...document.querySelectorAll('.filter')];
+const search = document.getElementById('search');
+const empty = document.getElementById('empty');
+const saved = new Set();
+let activeFilter = 'all';
+
+function render() {
+  let count = 0;
+  cards.forEach(card => {
+    const category = card.dataset.category;
+    const title = card.dataset.title.toLowerCase();
+    const description = card.querySelector('.photo-info').innerText.toLowerCase();
+    const matchFilter = activeFilter === 'all' ||
+      (activeFilter === 'saved' ? saved.has(card) : category === activeFilter);
+    const matchSearch = (title + ' ' + description).includes(search.value.toLowerCase().trim());
+    card.hidden = !(matchFilter && matchSearch);
+    if (!card.hidden) count++;
+  });
+  empty.classList.toggle('show', count === 0);
+}
+
+filters.forEach(button => {
+  button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter;
+    filters.forEach(b => b.classList.toggle('active', b === button));
+    render();
+  });
+});
+
+search.addEventListener('input', render);
+
+cards.forEach(card => {
+  const button = card.querySelector('.save');
+  button.addEventListener('click', event => {
+    event.stopPropagation();
+    if (saved.has(card)) {
+      saved.delete(card);
+      button.classList.remove('saved');
+      button.textContent = '♡';
+      notify('Removed from saved photos');
+    } else {
+      saved.add(card);
+      button.classList.add('saved');
+      button.textContent = '♥';
+      notify('Photo saved ♥');
+    }
+    render();
+  });
+
+  card.addEventListener('click', () => {
+    const img = card.querySelector('img');
+    document.getElementById('bigImage').src = img.src;
+    document.getElementById('bigImage').alt = img.alt;
+    document.getElementById('bigTitle').textContent = card.dataset.title;
+    document.getElementById('bigDesc').textContent =
+      card.querySelector('.photo-info p').textContent;
+    document.getElementById('lightbox').classList.add('open');
+  });
+});
+
+document.querySelectorAll('.category').forEach(category => {
+  function pick() {
+    activeFilter = category.dataset.pick;
+    filters.forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
+    search.value = '';
+    render();
+    document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+  }
+  category.addEventListener('click', pick);
+  category.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pick();
+    }
+  });
+});
+
+function notify(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+const lightbox = document.getElementById('lightbox');
+document.getElementById('close').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) lightbox.classList.remove('open');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') lightbox.classList.remove('open');
+});
+
+const menu = document.getElementById('menu');
+const navlinks = document.getElementById('navlinks');
+menu.addEventListener('click', () => navlinks.classList.toggle('show'));
+navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('show')));
+
+document.getElementById('year').textContent = new Date().getFullYear();
+render();
+
+// Display a fallback when an individual image URL fails.
+document.querySelectorAll('img').forEach(img => {
+  img.addEventListener('error', () => {
+    img.style.display = 'none';
+    const parent = img.parentElement;
+    if (parent && !parent.querySelector('.image-error')) {
+      const message = document.createElement('div');
+      message.className = 'image-error';
+      message.textContent = 'Image unavailable. Check your internet connection.';
+      message.style.cssText = 'padding:25px;background:#20221b;color:#d3f36b;font-size:12px;line-height:1.8;min-height:100px;display:flex;align-items:center;justify-content:center;text-align:center';
+      parent.insertBefore(message, img.nextSibling);
+    }
+  });
+});
+</script>
+</body>
+</html>
